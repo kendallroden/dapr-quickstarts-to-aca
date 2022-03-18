@@ -2,9 +2,7 @@ param location string = resourceGroup().location
 param environmentName string = 'env-${uniqueString(resourceGroup().id)}'
 param minReplicas int = 0
 param checkoutImage string = 'nginx'
-param checkoutPort int = 3000
 param orderProcessorImage string = 'nginx'
-param orderProcessorPort int = 3000
 param containerRegistry string
 param containerRegistryUsername string
 
@@ -28,7 +26,7 @@ module CheckoutService '../../../../bicep/container-http.bicep' = {
     containerAppName: 'checkout'
     environmentId: environment.outputs.environmentId
     containerImage: checkoutImage
-    containerPort: checkoutPort
+    containerPort: 3000
     isExternalIngress: false
     minReplicas: minReplicas
     containerRegistry: containerRegistry
@@ -52,7 +50,7 @@ module OrderProcessorService '../../../../bicep/container-http.bicep' = {
     containerAppName: 'order-processor'
     environmentId: environment.outputs.environmentId
     containerImage: orderProcessorImage
-    containerPort: orderProcessorPort
+    containerPort: 5001
     isExternalIngress: false
     minReplicas: minReplicas
     containerRegistry: containerRegistry

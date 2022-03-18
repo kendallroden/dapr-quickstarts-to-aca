@@ -87,7 +87,6 @@ jobs:
                 minReplicas=0 \
                 checkoutImage='${{ needs.build.outputs.containerImage-checkout }}' \
                 orderProcessorImage='${{ needs.build.outputs.containerImage-order-processor }}' \
-                orderProcessorPort=5001 \
                 containerRegistry=${{ env.REGISTRY }} \
                 containerRegistryUsername=${{ github.actor }} \
                 containerRegistryPassword=${{ secrets.PACKAGES_TOKEN }}
