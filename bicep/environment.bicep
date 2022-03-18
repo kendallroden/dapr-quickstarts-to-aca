@@ -9,27 +9,27 @@ resource managedEnvironment 'Microsoft.App/managedEnvironments@2022-01-01-previe
     internalLoadBalancerEnabled: false
     appLogsConfiguration: {
       destination: 'log-analytics'
-      // logAnalyticsConfiguration: {
-      //   customerId: reference('Microsoft.OperationalInsights/workspaces/${logAnalyticsWorkspaceName}', '2020-08-01').customerId
-      //   sharedKey: logAnalyticsWorkspace.listKeys().primarySharedKey
-      // }
+      logAnalyticsConfiguration: {
+        customerId: reference('Microsoft.OperationalInsights/workspaces/${logAnalyticsWorkspaceName}', '2020-08-01').customerId
+        sharedKey: logAnalyticsWorkspace.listKeys().primarySharedKey
+      }
     }
     type: 'managed'
   }
 }
 
-// resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-08-01' = {
-//   name: logAnalyticsWorkspaceName
-//   location: location
-//   properties: {
-//     sku: {
-//       name: 'PerGB2018'
-//     }
-//     retentionInDays: 30
-//     workspaceCapping: {}
-//   }
-//   dependsOn: []
-// }
+resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-08-01' = {
+  name: logAnalyticsWorkspaceName
+  location: location
+  properties: {
+    sku: {
+      name: 'PerGB2018'
+    }
+    retentionInDays: 30
+    workspaceCapping: {}
+  }
+  dependsOn: []
+}
 
 output location string = location
 output environmentId string = managedEnvironment.id
