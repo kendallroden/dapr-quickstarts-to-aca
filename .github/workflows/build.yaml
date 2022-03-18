@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        services: [ {'imageName': 'checkout', 'directory': './pub_sub/javascript/sdk/checkout'}, {'imageName': 'order-processor', 'directory': './pub_sub/javascript/sdk/order-processor'} ]
+        services: [ {'imageName': 'checkout', 'directory': './service_invocation/javascript/http/checkout'}, {'imageName': 'order-processor', 'directory': './service_invocation/javascript/http/order-processor'} ]
     permissions:
       contents: read
       packages: write
