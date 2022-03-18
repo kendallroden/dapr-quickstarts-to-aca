@@ -82,7 +82,7 @@ jobs:
         with:
           inlineScript: |
             az group create -g ${{ secrets.RESOURCE_GROUP }} -l CentralUSEUAP
-            az deployment group create -g ${{ secrets.RESOURCE_GROUP }} -f ./service_invocation/deploy/main.bicep \
+            az deployment group create -g ${{ secrets.RESOURCE_GROUP }} -f ./service_invocation/javascript/http/deploy/main.bicep \
              -p \
                 minReplicas=0 \
                 checkoutImage='${{ needs.build.outputs.containerImage-checkout }}' \
