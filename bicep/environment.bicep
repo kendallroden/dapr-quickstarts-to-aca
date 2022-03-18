@@ -1,51 +1,36 @@
 param environmentName string
 param logAnalyticsWorkspaceName string = 'logs-${environmentName}'
-param appInsightsName string = 'appins-${environmentName}'
 param location string = resourceGroup().location
 
-resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-03-01-preview' = {
-  name: logAnalyticsWorkspaceName
-  location: location
-  properties: any({
-    retentionInDays: 30
-    features: {
-      searchVersion: 1
-    }
-    sku: {
-      name: 'PerGB2018'
-    }
-  })
-}
-
-resource appInsights 'Microsoft.Insights/components@2020-02-02-preview' = {
-  name: appInsightsName
-  location: location
-  kind: 'web'
-  properties: { 
-    Application_Type: 'web'
-    Flow_Type: 'Redfield'
-    Request_Source: 'CustomDeployment'
-  }
-}
-
-resource environment 'Microsoft.App/managedEnvironments@2022-01-01-preview' = {
+resource managedEnvironment 'Microsoft.App/managedEnvironments@2022-01-01-preview' = {
   name: environmentName
   location: location
   properties: {
-    type: 'managed'
     internalLoadBalancerEnabled: false
     appLogsConfiguration: {
       destination: 'log-analytics'
       logAnalyticsConfiguration: {
-        customerId: logAnalyticsWorkspace.properties.customerId
+        customerId: reference('Microsoft.OperationalInsights/workspaces/${logAnalyticsWorkspaceName}', '2020-08-01').customerId
         sharedKey: logAnalyticsWorkspace.listKeys().primarySharedKey
       }
     }
-    containerAppsConfiguration: {
-      daprAIInstrumentationKey: appInsights.properties.InstrumentationKey
-    }
+    type: 'managed'
   }
 }
 
+resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-08-01' = {
+  name: logAnalyticsWorkspaceName
+  location: location
+  properties: {
+    sku: {
+      name: 'PerGB2018'
+    }
+    retentionInDays: 30
+    workspaceCapping: {}
+  }
+  dependsOn: []
+}
+
+
 output location string = location
-output environmentId string = environment.id
+output environmentId string = managedEnvironment.id
