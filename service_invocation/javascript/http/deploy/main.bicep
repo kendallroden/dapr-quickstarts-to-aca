@@ -15,6 +15,7 @@ module environment '../../../../bicep/environment.bicep' = {
   params: {
     environmentName: environmentName
     location: location
+    logAnalyticsLocation: 'canadacentral'
   }
 }
 
