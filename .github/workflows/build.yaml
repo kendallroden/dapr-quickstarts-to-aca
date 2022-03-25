@@ -84,7 +84,7 @@ jobs:
             az group create -g ${{ secrets.RESOURCE_GROUP }} -l CentralUSEUAP
             az deployment group create -g ${{ secrets.RESOURCE_GROUP }} -f ./service_invocation/javascript/http/deploy/main.bicep \
              -p \
-                minReplicas=0 \
+                minReplicas=1 \
                 checkoutImage='${{ needs.build.outputs.containerImage-checkout }}' \
                 orderProcessorImage='${{ needs.build.outputs.containerImage-order-processor }}' \
                 containerRegistry=${{ env.REGISTRY }} \
