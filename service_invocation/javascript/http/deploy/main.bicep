@@ -32,7 +32,7 @@ module checkoutServiceModule '../../../../bicep/container-http.bicep' = {
   ]
   params: {
     location: location
-    containerAppsEnvName: containerAppsEnvName
+    environmentId: containerAppsEnvModule.outputs.environmentId
     containerAppName: 'checkout'
     containerPort: 3000
     isExternalIngress: false
@@ -60,7 +60,7 @@ module orderProcessorServiceModule '../../../../bicep/container-http.bicep' = {
   ]
   params: {
     location: location
-    containerAppsEnvName: containerAppsEnvName
+    environmentId: containerAppsEnvModule.outputs.environmentId
     containerAppName: 'order-processor'
     containerImage: orderProcessorImage
     containerPort: 5001

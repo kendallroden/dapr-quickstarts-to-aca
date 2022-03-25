@@ -1,6 +1,6 @@
 param containerAppName string
 param location string
-param containerAppsEnvName string
+param environmentId string
 param containerImage string
 param containerPort int
 param isExternalIngress bool
@@ -18,15 +18,15 @@ param secrets array = [
 @secure()
 param containerRegistryPassword string
 
-resource environment 'Microsoft.App/containerApps@2022-01-01-preview' existing = {
-  name: containerAppsEnvName
-}
+// resource environment 'Microsoft.App/containerApps@2022-01-01-preview' existing = {
+//   name: containerAppsEnvName
+// }
 
 resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
   name: containerAppName
   location: location
   properties: {
-    managedEnvironmentId: environment.id
+    managedEnvironmentId: environmentId
     configuration: {
       secrets: secrets
       registries: [
