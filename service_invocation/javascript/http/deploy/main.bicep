@@ -10,9 +10,8 @@ param orderProcessorImage string = ''
 param containerRegistry string = ''
 param containerRegistryUsername string = ''
 
-
 @secure()
-param containerRegistryPassword string
+param containerRegistryPassword string = ''
 
 // Container Apps Environment
 module containerAppsEnvModule '../../../../bicep/environment.bicep' = {
@@ -20,7 +19,7 @@ module containerAppsEnvModule '../../../../bicep/environment.bicep' = {
   params: {
     environmentName: containerAppsEnvName
     location: location
-    logAnalyticsWorkspaceName: 'logs-${containerAppsEnvName}'
+    logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
     logAnalyticsLocation: logAnalyticsLocation
   }
 }
@@ -33,6 +32,7 @@ module checkoutServiceModule '../../../../bicep/container-http.bicep' = {
   ]
   params: {
     location: location
+    environmentName: containerAppsEnvName
     containerAppName: 'checkout'
     containerPort: 3000
     isExternalIngress: false
@@ -60,6 +60,7 @@ module orderProcessorServiceModule '../../../../bicep/container-http.bicep' = {
   ]
   params: {
     location: location
+    environmentName: containerAppsEnvName
     containerAppName: 'order-processor'
     containerImage: orderProcessorImage
     containerPort: 5001
