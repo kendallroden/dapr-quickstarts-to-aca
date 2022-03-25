@@ -12,7 +12,7 @@ async function main() {
   };
   
   while (true) {
-    const order = {orderId: i};
+    const order = {orderId: Math.floor(Math.random() * 10000) };
 
     // Invoking a service
     const res = await axios.post(`${DAPR_HOST}:${DAPR_HTTP_PORT}/orders`, order , axiosConfig);
