@@ -18,7 +18,7 @@ param secrets array = [
 @secure()
 param containerRegistryPassword string
 
-resource cappsEnv 'Microsoft.Web/kubeEnvironments@2021-03-01' existing = {
+resource cappsEnv 'Microsoft.App/containerApps@2022-01-01-preview' existing = {
   name: containerAppsEnvName
 }
 
