@@ -18,7 +18,6 @@ resource managedEnvironment 'Microsoft.App/managedEnvironments@2022-01-01-previe
   name: environmentName
   location: location
   properties: {
-    internalLoadBalancerEnabled: false
     appLogsConfiguration: {
       destination: 'log-analytics'
       logAnalyticsConfiguration: {
