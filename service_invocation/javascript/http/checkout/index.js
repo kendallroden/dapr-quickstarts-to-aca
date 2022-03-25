@@ -11,7 +11,7 @@ async function main() {
     }
   };
   
-  for(var i = 1; i <= 10; i++) {
+  while (true) {
     const order = {orderId: i};
 
     // Invoking a service
