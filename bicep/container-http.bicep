@@ -8,7 +8,12 @@ param containerRegistry string
 param containerRegistryUsername string
 param env array = []
 param minReplicas int
-param secrets array
+param secrets array = [
+  {
+    name: 'reg-password'
+    value: containerRegistryPassword
+  }
+]
 
 @secure()
 param containerRegistryPassword string
