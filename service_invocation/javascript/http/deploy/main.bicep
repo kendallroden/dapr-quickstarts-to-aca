@@ -22,9 +22,6 @@ module environment '../../../../bicep/environment.bicep' = {
 // Checkout Service
 module CheckoutService '../../../../bicep/container-http.bicep' = {
   name: 'checkout'
-  dependsOn: [
-    OrderProcessorService
-  ]
   params: {
     location: location
     containerAppName: 'checkout'
@@ -36,9 +33,6 @@ module CheckoutService '../../../../bicep/container-http.bicep' = {
     containerRegistry: containerRegistry
     containerRegistryUsername: containerRegistryUsername
     containerRegistryPassword: containerRegistryPassword
-    dependsOn: [
-      OrderProcessorService
-    ]
     secrets: [
       {
         name: 'docker-password'
@@ -46,6 +40,9 @@ module CheckoutService '../../../../bicep/container-http.bicep' = {
       }
     ]
   }
+  dependsOn: [
+    OrderProcessorService
+  ]
 }
 
 
@@ -63,7 +60,6 @@ module OrderProcessorService '../../../../bicep/container-http.bicep' = {
     containerRegistry: containerRegistry
     containerRegistryUsername: containerRegistryUsername
     containerRegistryPassword: containerRegistryPassword
-    dependsOn: []
     secrets: [
       {
         name: 'docker-password'

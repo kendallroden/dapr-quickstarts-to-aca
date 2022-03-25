@@ -8,7 +8,6 @@ param containerRegistry string
 param containerRegistryUsername string
 param env array = []
 param minReplicas int = 0
-param dependsOn array = []
 param secrets array = [
   {
     name: 'docker-password'
@@ -60,7 +59,6 @@ resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
       }
     }
   }
-  dependsOn:dependsOn
 }
 
 output fqdn string = containerApp.properties.configuration.ingress.fqdn
