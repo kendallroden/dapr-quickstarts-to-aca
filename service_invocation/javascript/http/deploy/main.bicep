@@ -17,7 +17,7 @@ param containerRegistryPassword string = ''
 module containerAppsEnvModule '../../../../bicep/environment.bicep' = {
   name:'${deployment().name}--containerAppsEnv'
   params: {
-    environmentName: containerAppsEnvName
+    containerAppsEnvName: containerAppsEnvName
     location: location
     logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
     logAnalyticsLocation: logAnalyticsLocation
@@ -32,7 +32,7 @@ module checkoutServiceModule '../../../../bicep/container-http.bicep' = {
   ]
   params: {
     location: location
-    environmentName: containerAppsEnvName
+    containerAppsEnvName: containerAppsEnvName
     containerAppName: 'checkout'
     containerPort: 3000
     isExternalIngress: false
@@ -60,7 +60,7 @@ module orderProcessorServiceModule '../../../../bicep/container-http.bicep' = {
   ]
   params: {
     location: location
-    environmentName: containerAppsEnvName
+    containerAppsEnvName: containerAppsEnvName
     containerAppName: 'order-processor'
     containerImage: orderProcessorImage
     containerPort: 5001
