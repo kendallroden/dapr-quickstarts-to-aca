@@ -20,7 +20,7 @@ module containerAppsEnvModule '../../../../bicep/environment.bicep' = {
   params: {
     environmentName: containerAppsEnvName
     location: location
-    logAnalyticsWorkspaceName: 'logs-${environmentName}'
+    logAnalyticsWorkspaceName: 'logs-${containerAppsEnvName}'
     logAnalyticsLocation: logAnalyticsLocation
   }
 }
