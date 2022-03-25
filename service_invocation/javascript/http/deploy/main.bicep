@@ -33,6 +33,9 @@ module CheckoutService '../../../../bicep/container-http.bicep' = {
     containerRegistry: containerRegistry
     containerRegistryUsername: containerRegistryUsername
     containerRegistryPassword: containerRegistryPassword
+    dependsOn: [
+      OrderProcessorService
+    ]
     secrets: [
       {
         name: 'docker-password'
@@ -57,6 +60,7 @@ module OrderProcessorService '../../../../bicep/container-http.bicep' = {
     containerRegistry: containerRegistry
     containerRegistryUsername: containerRegistryUsername
     containerRegistryPassword: containerRegistryPassword
+    dependsOn: []
     secrets: [
       {
         name: 'docker-password'
