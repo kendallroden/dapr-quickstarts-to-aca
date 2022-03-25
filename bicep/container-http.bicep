@@ -10,7 +10,7 @@ param env array = []
 param minReplicas int = 0
 param secrets array = [
   {
-    name: 'docker-password'
+    name: 'reg-password'
     value: containerRegistryPassword
   }
 ]
@@ -18,11 +18,10 @@ param secrets array = [
 @secure()
 param containerRegistryPassword string
 
-var registrySecretRefName = 'docker-password'
+var registrySecretRefName = 'reg-password'
 
 resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
   name: containerAppName
-  kind: 'containerapp'
   location: location
   properties: {
     managedEnvironmentId: environmentId
@@ -43,6 +42,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
       dapr: {
         enabled: true
         appPort: containerPort
+        appProtocol: 'http'
         appId: containerAppName
       }
     }
