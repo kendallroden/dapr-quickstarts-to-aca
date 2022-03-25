@@ -5,6 +5,7 @@ const DAPR_HTTP_PORT = process.env.DAPR_HTTP_PORT || "3500";
 
 async function main() {
   // Adding app id as part of the header
+  sleep(180000);
   let axiosConfig = {
     headers: {
         "dapr-app-id": "order-processor"
