@@ -71,7 +71,7 @@ module orderProcessorServiceModule '../../../../bicep/container-http.bicep' = {
     containerRegistryPassword: containerRegistryPassword
     secrets: [
       {
-        name: 'docker-password'
+        name: 'reg-password'
         value: containerRegistryPassword
       }
     ]
