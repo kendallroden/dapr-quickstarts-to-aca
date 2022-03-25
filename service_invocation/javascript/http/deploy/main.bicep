@@ -29,6 +29,7 @@ module checkoutServiceModule '../../../../bicep/container-http.bicep' = {
   name: '${deployment().name}--checkout-service'
    dependsOn: [
     containerAppsEnvModule
+    orderProcessorServiceModule
   ]
   params: {
     location: location
@@ -56,7 +57,6 @@ module orderProcessorServiceModule '../../../../bicep/container-http.bicep' = {
   name: '${deployment().name}--order-processor-service'
    dependsOn: [
     containerAppsEnvModule
-    checkoutServiceModule
   ]
   params: {
     location: location
