@@ -5,7 +5,7 @@
     "main": "index.js",
     "type": "module",
     "scripts": {
-        "start": "dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- npm run start"
+        "start": "node index.js"
     },
     "keywords": [],
     "author": "",
