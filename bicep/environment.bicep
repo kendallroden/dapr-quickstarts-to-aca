@@ -1,4 +1,4 @@
-param environmentName string
+param containerAppsEnvName string
 param logAnalyticsWorkspaceName string
 param location string
 param logAnalyticsLocation string
@@ -15,7 +15,7 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-08
 }
 
 resource managedEnvironment 'Microsoft.App/managedEnvironments@2022-01-01-preview' = {
-  name: environmentName
+  name: containerAppsEnvName
   location: location
   properties: {
     appLogsConfiguration: {
