@@ -1,37 +1,34 @@
 param containerAppName string
-param location string = resourceGroup().location
-param environmentId string
+param location string
+param containerAppsEnvName string
 param containerImage string
 param containerPort int
 param isExternalIngress bool
 param containerRegistry string
 param containerRegistryUsername string
 param env array = []
-param minReplicas int = 0
-param secrets array = [
-  {
-    name: 'reg-password'
-    value: containerRegistryPassword
-  }
-]
+param minReplicas int
+param secrets array
 
 @secure()
 param containerRegistryPassword string
 
-var registrySecretRefName = 'reg-password'
+resource cappsEnv 'Microsoft.Web/kubeEnvironments@2021-03-01' existing = {
+  name: containerAppsEnvName
+}
 
 resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
   name: containerAppName
   location: location
   properties: {
-    managedEnvironmentId: environmentId
+    managedEnvironmentId: cappsEnv.id
     configuration: {
       secrets: secrets
       registries: [
         {
           server: containerRegistry
           username: containerRegistryUsername
-          passwordSecretRef: registrySecretRefName
+          passwordSecretRef: 'reg-password'
         }
       ]
       ingress: {
