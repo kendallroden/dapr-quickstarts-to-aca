@@ -22,6 +22,9 @@ module environment '../../../../bicep/environment.bicep' = {
 // Checkout Service
 module CheckoutService '../../../../bicep/container-http.bicep' = {
   name: 'checkout'
+  dependsOn: [
+    OrderProcessorService
+  ]
   params: {
     location: location
     containerAppName: 'checkout'
