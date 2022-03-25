@@ -1,7 +1,7 @@
 param environmentName string
-param logAnalyticsWorkspaceName string = 'logs-${environmentName}'
-param location string = resourceGroup().location
-param logAnalyticsLocation string = 'centralus'
+param logAnalyticsWorkspaceName string
+param location string
+param logAnalyticsLocation string
 
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-08-01' = {
   name: logAnalyticsWorkspaceName
