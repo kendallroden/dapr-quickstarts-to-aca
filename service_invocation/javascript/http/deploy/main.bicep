@@ -43,7 +43,7 @@ module checkoutServiceModule '../../../../bicep/container-http.bicep' = {
     containerImage: checkoutImage
     secrets: [
       {
-        name: 'docker-password'
+        name: 'reg-password'
         value: containerRegistryPassword
       }
     ]
