@@ -18,7 +18,7 @@ param secrets array = [
 @secure()
 param containerRegistryPassword string
 
-resource cappsEnv 'Microsoft.App/containerApps@2022-01-01-preview' existing = {
+resource environment 'Microsoft.App/containerApps@2022-01-01-preview' existing = {
   name: containerAppsEnvName
 }
 
@@ -26,7 +26,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
   name: containerAppName
   location: location
   properties: {
-    managedEnvironmentId: cappsEnv.id
+    managedEnvironmentId: environment.id
     configuration: {
       secrets: secrets
       registries: [
