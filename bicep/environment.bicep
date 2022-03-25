@@ -25,7 +25,6 @@ resource managedEnvironment 'Microsoft.App/managedEnvironments@2022-01-01-previe
         sharedKey: logAnalyticsWorkspace.listKeys().primarySharedKey
       }
     }
-    type: 'managed'
   }
 }
 
