@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const DAPR_HOST = process.env.DAPR_HOST || "http://localhost";
+const DAPR_HOST = process.env.DAPR_HOST || "http://127.0.0.1";
 const DAPR_HTTP_PORT = process.env.DAPR_HTTP_PORT || "3500";
 
 async function main() {
