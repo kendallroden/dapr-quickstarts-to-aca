@@ -25,7 +25,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
           passwordSecretRef: 'reg-password'
         }
       ]
-      ingress: (enableIngress == 'true') ? { 
+      ingress: (enableIngress == true) ? { 
         external: isExternalIngress
         targetPort: containerPort
         transport: 'auto'
@@ -52,4 +52,4 @@ resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
   }
 }
 
-output fqdn string = enableIngress ? containerApp.properties.configuration.ingress.fqdn : null
+output fqdn string = (enableIngress == true) ? containerApp.properties.configuration.ingress.fqdn : null
