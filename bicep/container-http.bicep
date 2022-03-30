@@ -17,6 +17,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
   properties: {
     managedEnvironmentId: environmentId
     configuration: {
+      activeRevisionsMode: 'single'
       secrets: secrets
       registries: [
         {
@@ -32,7 +33,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
       } : null 
       dapr: {
         enabled: true
-        appPort: containerPort
+        appPort: containerPort 
         appProtocol: 'http'
         appId: containerAppName
       }
