@@ -3,15 +3,15 @@ param uniqueSeed string = '${subscription().subscriptionId}-${resourceGroup().na
 param uniqueSuffix string = 'daprcapps-${uniqueString(uniqueSeed)}'
 param containerAppsEnvName string = 'cae-${uniqueSuffix}'
 param logAnalyticsWorkspaceName string = 'log-${uniqueSuffix}'
-param logAnalyticsLocation string = 'centralus'
+param appInsightsName string = 'ai-${uniqueSuffix}'
 param minReplicas int = 1
-param checkoutImage string = ''
-param orderProcessorImage string = ''
-param containerRegistry string = ''
-param containerRegistryUsername string = ''
+param checkoutImage string
+param orderProcessorImage string
+param containerRegistry string
+param containerRegistryUsername string
 
 @secure()
-param containerRegistryPassword string = ''
+param containerRegistryPassword string
 
 // Container Apps Environment
 module containerAppsEnvModule '../../../../bicep/environment.bicep' = {
@@ -20,7 +20,7 @@ module containerAppsEnvModule '../../../../bicep/environment.bicep' = {
     containerAppsEnvName: containerAppsEnvName
     location: location
     logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
-    logAnalyticsLocation: logAnalyticsLocation
+    appInsightsName: appInsightsName 
   }
 }
 
@@ -28,19 +28,19 @@ module containerAppsEnvModule '../../../../bicep/environment.bicep' = {
 module checkoutServiceModule '../../../../bicep/container-http.bicep' = {
   name: '${deployment().name}--checkout-service'
    dependsOn: [
-    containerAppsEnvModule
     orderProcessorServiceModule
+    containerAppsEnvModule
   ]
   params: {
     location: location
     environmentId: containerAppsEnvModule.outputs.environmentId
     containerAppName: 'checkout'
     containerPort: 3000
+    enableIngress: false
     isExternalIngress: false
     minReplicas: minReplicas
     containerRegistry: containerRegistry
     containerRegistryUsername: containerRegistryUsername
-    containerRegistryPassword: containerRegistryPassword
     containerImage: checkoutImage
     secrets: [
       {
@@ -64,11 +64,11 @@ module orderProcessorServiceModule '../../../../bicep/container-http.bicep' = {
     containerAppName: 'order-processor'
     containerImage: orderProcessorImage
     containerPort: 5001
+    enableIngress: false
     isExternalIngress: false
     minReplicas: minReplicas
     containerRegistry: containerRegistry
     containerRegistryUsername: containerRegistryUsername
-    containerRegistryPassword: containerRegistryPassword
     secrets: [
       {
         name: 'reg-password'

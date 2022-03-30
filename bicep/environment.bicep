@@ -1,16 +1,31 @@
 param containerAppsEnvName string
 param logAnalyticsWorkspaceName string
+param appInsightsName string
 param location string
-param logAnalyticsLocation string
 
-resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-08-01' = {
+resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-03-01-preview' = {
   name: logAnalyticsWorkspaceName
-  location: logAnalyticsLocation
-  properties: {
+  location: location
+  properties: any({
+    retentionInDays: 30
+    features: {
+      searchVersion: 1
+    }
     sku: {
       name: 'PerGB2018'
     }
-    retentionInDays: 30
+  })
+
+  
+}
+
+resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
+  name: appInsightsName
+  location: location
+  kind: 'web'
+  properties: {
+    Application_Type: 'web'
+    WorkspaceResourceId:logAnalyticsWorkspace.id
   }
 }
 
@@ -18,6 +33,7 @@ resource environment 'Microsoft.App/managedEnvironments@2022-01-01-preview' = {
   name: containerAppsEnvName
   location: location
   properties: {
+    daprAIInstrumentationKey:appInsights.properties.InstrumentationKey
     appLogsConfiguration: {
       destination: 'log-analytics'
       logAnalyticsConfiguration: {
@@ -28,7 +44,4 @@ resource environment 'Microsoft.App/managedEnvironments@2022-01-01-preview' = {
   }
 }
 
-
-
-output location string = location
 output environmentId string = environment.id

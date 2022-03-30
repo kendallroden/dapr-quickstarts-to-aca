@@ -1,26 +1,15 @@
 param containerAppName string
 param location string
 param environmentId string
+param containerRegistryUsername string
 param containerImage string
 param containerPort int
-param isExternalIngress bool
+param isExternalIngress bool 
+param enableIngress bool 
 param containerRegistry string
-param containerRegistryUsername string
 param env array = []
 param minReplicas int
-param secrets array = [
-  {
-    name: 'reg-password'
-    value: containerRegistryPassword
-  }
-]
-
-@secure()
-param containerRegistryPassword string
-
-// resource environment 'Microsoft.App/containerApps@2022-01-01-preview' existing = {
-//   name: containerAppsEnvName
-// }
+param secrets array = []
 
 resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
   name: containerAppName
@@ -36,7 +25,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
           passwordSecretRef: 'reg-password'
         }
       ]
-      ingress: {
+      ingress: (enableIngress == true) ? null : {
         external: isExternalIngress
         targetPort: containerPort
         transport: 'auto'
