@@ -52,4 +52,4 @@ resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
   }
 }
 
-output fqdn string = (enableIngress == true) ? containerApp.properties.configuration.ingress.fqdn : null
+output fqdn string = (enableIngress == true) ? containerApp.properties.configuration.ingress.fqdn : ''
