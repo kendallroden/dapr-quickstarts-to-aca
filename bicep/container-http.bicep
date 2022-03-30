@@ -25,11 +25,11 @@ resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
           passwordSecretRef: 'reg-password'
         }
       ]
-      ingress: (enableIngress == true) ? null : {
+      ingress: (enableIngress == 'true') ? { 
         external: isExternalIngress
         targetPort: containerPort
         transport: 'auto'
-      }
+      } : null 
       dapr: {
         enabled: true
         appPort: containerPort
