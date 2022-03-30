@@ -64,7 +64,7 @@ module orderProcessorServiceModule '../../../../bicep/container-http.bicep' = {
     containerAppName: 'order-processor'
     containerImage: orderProcessorImage
     containerPort: 5001
-    enableIngress: false
+    enableIngress: true
     isExternalIngress: false
     minReplicas: minReplicas
     containerRegistry: containerRegistry
