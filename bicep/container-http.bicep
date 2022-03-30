@@ -33,7 +33,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
       } : null 
       dapr: {
         enabled: true
-        appPort: containerPort 
+        appPort: (enableIngress == true) ? containerPort : null
         appProtocol: 'http'
         appId: containerAppName
       }
