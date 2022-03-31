@@ -1,41 +1,50 @@
 param location string = resourceGroup().location
-param environmentName string = 'env-${uniqueString(resourceGroup().id)}'
-param minReplicas int = 0
-param checkoutImage string = 'nginx'
-param orderProcessorImage string = 'nginx'
+param uniqueSeed string = '${subscription().subscriptionId}-${resourceGroup().name}'
+param uniqueSuffix string = 'daprcapps-${uniqueString(uniqueSeed)}'
+param containerAppsEnvName string = 'cae-${uniqueSuffix}'
+param logAnalyticsWorkspaceName string = 'log-${uniqueSuffix}'
+param appInsightsName string = 'ai-${uniqueSuffix}'
+param minReplicas int = 1
+param checkoutImage string
+param orderProcessorImage string
 param containerRegistry string
 param containerRegistryUsername string
 
 @secure()
 param containerRegistryPassword string
 
-// Container App Environment
-module environment '../../../../bicep/environment.bicep' = {
-  name: 'container-app-environment'
+// Container Apps Environment
+module containerAppsEnvModule '../../../../bicep/environment.bicep' = {
+  name:'${deployment().name}--containerAppsEnv'
   params: {
-    environmentName: environmentName
+    containerAppsEnvName: containerAppsEnvName
     location: location
-    logAnalyticsLocation: 'canadacentral'
+    logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
+    appInsightsName: appInsightsName 
   }
 }
 
 // Checkout Service
-module CheckoutService '../../../../bicep/container-http.bicep' = {
-  name: 'checkout'
+module checkoutServiceModule '../../../../bicep/container-http.bicep' = {
+  name: '${deployment().name}--checkout-service'
+   dependsOn: [
+    orderProcessorServiceModule
+    containerAppsEnvModule
+  ]
   params: {
     location: location
+    environmentId: containerAppsEnvModule.outputs.environmentId
     containerAppName: 'checkout'
-    environmentId: environment.outputs.environmentId
-    containerImage: checkoutImage
     containerPort: 3000
+    enableIngress: false
     isExternalIngress: false
     minReplicas: minReplicas
     containerRegistry: containerRegistry
     containerRegistryUsername: containerRegistryUsername
-    containerRegistryPassword: containerRegistryPassword
+    containerImage: checkoutImage
     secrets: [
       {
-        name: 'docker-password'
+        name: 'reg-password'
         value: containerRegistryPassword
       }
     ]
@@ -47,22 +56,25 @@ module CheckoutService '../../../../bicep/container-http.bicep' = {
 
 
 // Order Processor Service
-module OrderProcessorService '../../../../bicep/container-http.bicep' = {
-  name: 'order-processor'
+module orderProcessorServiceModule '../../../../bicep/container-http.bicep' = {
+  name: '${deployment().name}--order-processor-service'
+   dependsOn: [
+    containerAppsEnvModule
+  ]
   params: {
     location: location
+    environmentId: containerAppsEnvModule.outputs.environmentId
     containerAppName: 'order-processor'
-    environmentId: environment.outputs.environmentId
     containerImage: orderProcessorImage
     containerPort: 5001
+    enableIngress: true
     isExternalIngress: false
     minReplicas: minReplicas
     containerRegistry: containerRegistry
     containerRegistryUsername: containerRegistryUsername
-    containerRegistryPassword: containerRegistryPassword
     secrets: [
       {
-        name: 'docker-password'
+        name: 'reg-password'
         value: containerRegistryPassword
       }
     ]
