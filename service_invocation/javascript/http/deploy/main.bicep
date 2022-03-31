@@ -49,9 +49,6 @@ module checkoutServiceModule '../../../../bicep/container-http.bicep' = {
       }
     ]
   }
-  dependsOn: [
-    OrderProcessorService
-  ]
 }
 
 
